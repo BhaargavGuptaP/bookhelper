@@ -1,0 +1,52 @@
+{
+  "name": "@bookhelper/core-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Core API (NestJS 11). Sprint 1: env config, structured logging, RFC 9457 errors, health/readiness, storage abstraction, auth + DB foundation.",
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start": "node dist/main.js",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf dist .turbo coverage"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.717.0",
+    "@aws-sdk/s3-request-presigner": "^3.717.0",
+    "@bookhelper/api-contracts": "workspace:*",
+    "@bookhelper/telemetry": "workspace:*",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "drizzle-orm": "^0.38.3",
+    "express": "^4.21.2",
+    "fflate": "^0.8.2",
+    "jose": "^5.9.6",
+    "nestjs-pino": "^4.2.0",
+    "pdf-lib": "^1.17.1",
+    "pino-http": "^10.3.0",
+    "postgres": "^3.4.5",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@bookhelper/config": "workspace:*",
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.0.0",
+    "@swc/core": "^1.15.41",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "@types/supertest": "^6.0.2",
+    "drizzle-kit": "^0.30.1",
+    "supertest": "^7.0.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "unplugin-swc": "^1.5.9",
+    "vitest": "^2.1.8"
+  }
+}

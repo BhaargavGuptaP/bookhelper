@@ -1,0 +1,23 @@
+node_modules
+dist
+.next
+out
+coverage
+.turbo
+pnpm-lock.yaml
+packages/design-tokens/styles/tokens.css
+
+# Canonical product docs — formatted by their authors, not by this repo.
+ARCHITECTURE.md
+AI-ENGINE-SPEC.md
+DESIGN-SYSTEM-SPEC.md
+DESIGN-SYSTEM.md
+FEATURE-BREAKDOWN.md
+FEATURE-SPECIFICATION.md
+KNOWLEDGE-ENGINE-SPEC.md
+PRD.md
+READER-SPEC.md
+ROADMAP.md
+SPRINT-PLAN.md
+UX-DESIGN.md
+UX-SPECIFICATION.md

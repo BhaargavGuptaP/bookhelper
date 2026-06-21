@@ -1,0 +1,401 @@
+/*
+ * Atlas — CSS variable surface for design tokens.
+ *
+ * Mirrors DESIGN-SYSTEM-SPEC.md §2 + §3. App code references variables only
+ * (e.g. `var(--bh-color-bg)`); it MUST NOT inline raw hex values.
+ *
+ * Theme model (UX-SPECIFICATION §3 / DSS §3.15–§3.17):
+ *   • `:root`                          → light (default).
+ *   • `:root[data-theme="dark"]`       → dark.
+ *   • `:root[data-theme="high-contrast"]` → high-contrast.
+ *   • `:root[data-theme="system"]`     → follows `prefers-color-scheme`.
+ *
+ * The ThemeProvider (packages/ui) is the only authority that writes
+ * `data-theme` on <html>. Never set it from a leaf component.
+ */
+
+/* ────────────────────────────────────────────────────────────────────── */
+/* Theme-independent tokens (§2.3–§2.16)                                  */
+/* ────────────────────────────────────────────────────────────────────── */
+:root {
+  /* §2.1 Type families */
+  --bh-font-ui:
+    "Geist Sans", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --bh-font-serif: "Tiempos Text", "Source Serif 4", Georgia, serif;
+  --bh-font-sans-alt: Inter, system-ui, sans-serif;
+  --bh-font-mono:
+    "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+  --bh-font-accessible: "Atkinson Hyperlegible", system-ui, sans-serif;
+
+  /* §2.3 Spacing scale */
+  --bh-space-0: 0;
+  --bh-space-px: 1px;
+  --bh-space-0_5: 2px;
+  --bh-space-1: 4px;
+  --bh-space-2: 8px;
+  --bh-space-3: 12px;
+  --bh-space-4: 16px;
+  --bh-space-5: 20px;
+  --bh-space-6: 24px;
+  --bh-space-8: 32px;
+  --bh-space-10: 40px;
+  --bh-space-12: 48px;
+  --bh-space-16: 64px;
+  --bh-space-20: 80px;
+  --bh-space-24: 96px;
+
+  /* §2.4 Radius */
+  --bh-radius-none: 0;
+  --bh-radius-xs: 4px;
+  --bh-radius-sm: 6px;
+  --bh-radius-md: 8px;
+  --bh-radius-lg: 12px;
+  --bh-radius-xl: 16px;
+  --bh-radius-2xl: 20px;
+  --bh-radius-full: 9999px;
+
+  /* §2.5 Border widths */
+  --bh-border-hairline: 1px;
+  --bh-border-thin: 1.5px;
+  --bh-border-medium: 2px;
+  --bh-border-thick: 3px;
+
+  /* §2.8 Blur */
+  --bh-blur-sm: 8px;
+  --bh-blur-md: 20px;
+  --bh-blur-lg: 40px;
+
+  /* §2.9 Opacity */
+  --bh-opacity-subtle: 0.04;
+  --bh-opacity-muted: 0.08;
+  --bh-opacity-disabled: 0.4;
+  --bh-opacity-secondary: 0.6;
+  --bh-opacity-scrim-light: 0.4;
+  --bh-opacity-scrim-dark: 0.6;
+
+  /* §2.10 Durations */
+  --bh-duration-instant: 0ms;
+  --bh-duration-fast: 120ms;
+  --bh-duration-base: 180ms;
+  --bh-duration-moderate: 240ms;
+  --bh-duration-slow: 320ms;
+  --bh-duration-slower: 480ms;
+
+  /* §2.11 Easings */
+  --bh-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --bh-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --bh-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --bh-ease-emphasized: cubic-bezier(0.2, 0, 0, 1.2);
+
+  /* §2.12 Z-index */
+  --bh-z-base: 0;
+  --bh-z-sticky: 100;
+  --bh-z-rail: 200;
+  --bh-z-dropdown: 1000;
+  --bh-z-overlay: 2000;
+  --bh-z-dialog: 2100;
+  --bh-z-palette: 3000;
+  --bh-z-toast: 4000;
+  --bh-z-tooltip: 5000;
+
+  /* §2.14 Shell sizes */
+  --bh-shell-rail-collapsed: 64px;
+  --bh-shell-rail-expanded: 240px;
+  --bh-shell-side-panel-min: 360px;
+  --bh-shell-side-panel-max: 420px;
+  --bh-shell-topbar: 52px;
+  --bh-reading-column: min(68ch, 720px);
+
+  /* §2.15 Control heights */
+  --bh-size-xs: 24px;
+  --bh-size-sm: 28px;
+  --bh-size-md: 32px;
+  --bh-size-lg: 36px;
+  --bh-size-xl: 44px;
+  --bh-touch-min: 44px;
+
+  /* §2.16 Icon sizes */
+  --bh-icon-xs: 14px;
+  --bh-icon-sm: 16px;
+  --bh-icon-md: 20px;
+  --bh-icon-lg: 24px;
+  --bh-icon-xl: 32px;
+
+  /* §3.14 AI signature (theme-agnostic surface) */
+  --bh-ai-gradient: linear-gradient(135deg, #6e56cf 0%, #3e63dd 100%);
+  --bh-ai-solid: #6e56cf;
+}
+
+/* ────────────────────────────────────────────────────────────────────── */
+/* LIGHT theme (default) — §3.1 + §3.8 (semantic) + §3.2 Iris             */
+/* ────────────────────────────────────────────────────────────────────── */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* Neutral / Slate ramp */
+  --bh-slate-1: #fcfcfd;
+  --bh-slate-2: #f8f9fa;
+  --bh-slate-3: #f1f3f5;
+  --bh-slate-4: #eceef0;
+  --bh-slate-5: #e6e8eb;
+  --bh-slate-6: #dfe2e6;
+  --bh-slate-7: #d3d7dd;
+  --bh-slate-8: #bcc2cb;
+  --bh-slate-9: #8b919d;
+  --bh-slate-10: #6e747f;
+  --bh-slate-11: #545a63;
+  --bh-slate-12: #1a1c1f;
+
+  /* Iris key steps */
+  --bh-iris-3: #f2f1fe;
+  --bh-iris-5: #e0ddfb;
+  --bh-iris-7: #bcb4f2;
+  --bh-iris-9: #5b5bd6;
+  --bh-iris-10: #5151cd;
+  --bh-iris-11: #5753c6;
+
+  /* §3.8 Semantic surfaces & text */
+  --bh-color-bg: var(--bh-slate-1);
+  --bh-color-surface-subtle: var(--bh-slate-2);
+  --bh-color-surface-raised: #ffffff;
+  --bh-color-surface-overlay: #ffffff;
+  --bh-color-surface-inset: var(--bh-slate-3);
+
+  --bh-color-border-subtle: var(--bh-slate-6);
+  --bh-color-border-default: var(--bh-slate-7);
+  --bh-color-border-strong: var(--bh-slate-8);
+
+  --bh-color-text-primary: var(--bh-slate-12);
+  --bh-color-text-secondary: var(--bh-slate-11);
+  --bh-color-text-tertiary: var(--bh-slate-10);
+  --bh-color-text-disabled: var(--bh-slate-8);
+
+  --bh-color-accent-tint: var(--bh-iris-3);
+  --bh-color-accent-selected: var(--bh-iris-5);
+  --bh-color-accent-border: var(--bh-iris-7);
+  --bh-color-accent-solid: var(--bh-iris-9);
+  --bh-color-accent-hover: var(--bh-iris-10);
+  --bh-color-accent-text: var(--bh-iris-11);
+
+  /* §3.4–§3.7 Semantic ramps */
+  --bh-color-success-tint: #e9f7ef;
+  --bh-color-success-solid: #30a46c;
+  --bh-color-success-text: #218358;
+  --bh-color-warning-tint: #fff6e5;
+  --bh-color-warning-solid: #ffb224;
+  --bh-color-warning-text: #946800;
+  --bh-color-danger-tint: #fdebec;
+  --bh-color-danger-solid: #e5484d;
+  --bh-color-danger-text: #ce2c31;
+  --bh-color-info-tint: #ebf0ff;
+  --bh-color-info-solid: #3e63dd;
+  --bh-color-info-text: #3a5bc7;
+
+  /* AI tint/border per theme */
+  --bh-color-ai-tint: #f4f2fe;
+  --bh-color-ai-border: #d8d2f7;
+
+  /* Focus ring (§3.8): iris.8 @50% — derived from iris.9 */
+  --bh-color-focus-ring: color-mix(in srgb, var(--bh-iris-9) 50%, transparent);
+
+  /* §2.7 Shadows */
+  --bh-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.04);
+  --bh-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05), 0 2px 6px rgb(0 0 0 / 0.05);
+  --bh-shadow-md: 0 2px 4px rgb(0 0 0 / 0.05), 0 6px 16px rgb(0 0 0 / 0.08);
+  --bh-shadow-lg: 0 4px 8px rgb(0 0 0 / 0.06), 0 12px 32px rgb(0 0 0 / 0.10);
+  --bh-shadow-xl: 0 8px 16px rgb(0 0 0 / 0.08), 0 24px 56px rgb(0 0 0 / 0.14);
+  --bh-shadow-focus: 0 0 0 3px var(--bh-color-focus-ring);
+  --bh-glow-ai: 0 0 24px rgb(110 86 207 / 0.25);
+
+  --bh-color-scrim: rgb(0 0 0 / var(--bh-opacity-scrim-light));
+}
+
+/* ────────────────────────────────────────────────────────────────────── */
+/* DARK theme — §3.1 dark column + §3.15                                  */
+/* ────────────────────────────────────────────────────────────────────── */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bh-slate-1: #0a0a0b;
+  --bh-slate-2: #111214;
+  --bh-slate-3: #17181b;
+  --bh-slate-4: #1d1f23;
+  --bh-slate-5: #24262b;
+  --bh-slate-6: #2c2f35;
+  --bh-slate-7: #373b42;
+  --bh-slate-8: #474c55;
+  --bh-slate-9: #5c626c;
+  --bh-slate-10: #7c828d;
+  --bh-slate-11: #a8aeb8;
+  --bh-slate-12: #eceef1;
+
+  --bh-iris-3: #1e1b33;
+  --bh-iris-5: #2c285a;
+  --bh-iris-7: #473e9e;
+  --bh-iris-9: #6e56cf;
+  --bh-iris-10: #7c66dc;
+  --bh-iris-11: #b8a9f5;
+
+  /* Elevation on dark reads via lighter surface + bordered (§3.15) */
+  --bh-color-bg: var(--bh-slate-1);
+  --bh-color-surface-subtle: var(--bh-slate-2);
+  --bh-color-surface-raised: var(--bh-slate-3);
+  --bh-color-surface-overlay: var(--bh-slate-4);
+  --bh-color-surface-inset: var(--bh-slate-2);
+
+  --bh-color-border-subtle: var(--bh-slate-6);
+  --bh-color-border-default: var(--bh-slate-7);
+  --bh-color-border-strong: var(--bh-slate-8);
+
+  --bh-color-text-primary: var(--bh-slate-12);
+  --bh-color-text-secondary: var(--bh-slate-11);
+  --bh-color-text-tertiary: var(--bh-slate-10);
+  --bh-color-text-disabled: var(--bh-slate-8);
+
+  --bh-color-accent-tint: var(--bh-iris-3);
+  --bh-color-accent-selected: var(--bh-iris-5);
+  --bh-color-accent-border: var(--bh-iris-7);
+  --bh-color-accent-solid: var(--bh-iris-9);
+  --bh-color-accent-hover: var(--bh-iris-10);
+  --bh-color-accent-text: var(--bh-iris-11);
+
+  --bh-color-success-tint: #10231a;
+  --bh-color-success-solid: #33b074;
+  --bh-color-success-text: #62c893;
+  --bh-color-warning-tint: #2e2008;
+  --bh-color-warning-solid: #ffb224;
+  --bh-color-warning-text: #f5c24e;
+  --bh-color-danger-tint: #2a1416;
+  --bh-color-danger-solid: #e5484d;
+  --bh-color-danger-text: #ff9592;
+  --bh-color-info-tint: #101a36;
+  --bh-color-info-solid: #3e63dd;
+  --bh-color-info-text: #8da4ef;
+
+  --bh-color-ai-tint: #1c1a33;
+  --bh-color-ai-border: #3a3270;
+
+  --bh-color-focus-ring: color-mix(in srgb, var(--bh-iris-9) 60%, transparent);
+
+  --bh-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.3);
+  --bh-shadow-sm: 0 2px 6px rgb(0 0 0 / 0.4);
+  --bh-shadow-md: 0 6px 16px rgb(0 0 0 / 0.5);
+  --bh-shadow-lg: 0 12px 32px rgb(0 0 0 / 0.55);
+  --bh-shadow-xl: 0 24px 56px rgb(0 0 0 / 0.6);
+  --bh-shadow-focus: 0 0 0 3px var(--bh-color-focus-ring);
+  --bh-glow-ai: 0 0 32px rgb(110 86 207 / 0.35);
+
+  --bh-color-scrim: rgb(0 0 0 / var(--bh-opacity-scrim-dark));
+}
+
+/* ────────────────────────────────────────────────────────────────────── */
+/* HIGH-CONTRAST theme — §3.17                                             */
+/* Maximize contrast; thicken borders; remove transparency; amplify focus. */
+/* ────────────────────────────────────────────────────────────────────── */
+:root[data-theme="high-contrast"] {
+  color-scheme: dark;
+
+  --bh-color-bg: #000000;
+  --bh-color-surface-subtle: #000000;
+  --bh-color-surface-raised: #0b0b0d;
+  --bh-color-surface-overlay: #0b0b0d;
+  --bh-color-surface-inset: #000000;
+
+  --bh-color-border-subtle: #ffffff;
+  --bh-color-border-default: #ffffff;
+  --bh-color-border-strong: #ffffff;
+
+  --bh-color-text-primary: #ffffff;
+  --bh-color-text-secondary: #ffffff;
+  --bh-color-text-tertiary: #d9d9de;
+  --bh-color-text-disabled: #8a8f99;
+
+  --bh-color-accent-tint: #1c1a33;
+  --bh-color-accent-selected: #2c285a;
+  --bh-color-accent-border: #ffffff;
+  --bh-color-accent-solid: #b8a9f5;
+  --bh-color-accent-hover: #d4cafa;
+  --bh-color-accent-text: #d4cafa;
+
+  --bh-color-success-tint: #001a0e;
+  --bh-color-success-solid: #6fe2a8;
+  --bh-color-success-text: #a3f0c5;
+  --bh-color-warning-tint: #1f1500;
+  --bh-color-warning-solid: #ffd166;
+  --bh-color-warning-text: #ffe199;
+  --bh-color-danger-tint: #1f0007;
+  --bh-color-danger-solid: #ff8b8f;
+  --bh-color-danger-text: #ffb6b8;
+  --bh-color-info-tint: #00102a;
+  --bh-color-info-solid: #9bb3ff;
+  --bh-color-info-text: #c2d0ff;
+
+  --bh-color-ai-tint: #1c1a33;
+  --bh-color-ai-border: #ffffff;
+
+  --bh-color-focus-ring: #ffd166;
+
+  /* §3.17 transparency removed; shadow minimized in favor of borders */
+  --bh-shadow-xs: none;
+  --bh-shadow-sm: none;
+  --bh-shadow-md: none;
+  --bh-shadow-lg: none;
+  --bh-shadow-xl: none;
+  --bh-shadow-focus: 0 0 0 3px var(--bh-color-focus-ring);
+  --bh-glow-ai: none;
+
+  --bh-color-scrim: #000000;
+}
+
+/* ────────────────────────────────────────────────────────────────────── */
+/* System preference (only when data-theme="system" — set by ThemeProvider) */
+/* ────────────────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] {
+    color-scheme: dark;
+    --bh-slate-1: #0a0a0b;
+    --bh-slate-12: #eceef1;
+    --bh-color-bg: #0a0a0b;
+    --bh-color-surface-raised: #17181b;
+    --bh-color-surface-overlay: #1d1f23;
+    --bh-color-text-primary: #eceef1;
+    --bh-color-text-secondary: #a8aeb8;
+    --bh-color-text-tertiary: #7c828d;
+    --bh-color-border-subtle: #2c2f35;
+    --bh-color-border-default: #373b42;
+    --bh-color-border-strong: #474c55;
+    --bh-color-scrim: rgb(0 0 0 / 0.6);
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────── */
+/* Reduced motion (UX §12 / DSS §11) — collapse durations                  */
+/* ────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --bh-duration-fast: 0ms;
+    --bh-duration-base: 0ms;
+    --bh-duration-moderate: 0ms;
+    --bh-duration-slow: 0ms;
+    --bh-duration-slower: 0ms;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────── */
+/* OS forced colors — respect (DSS §3.17 "honors OS forced-colors")        */
+/* ────────────────────────────────────────────────────────────────────── */
+@media (forced-colors: active) {
+  :root {
+    --bh-color-bg: Canvas;
+    --bh-color-surface-raised: Canvas;
+    --bh-color-surface-overlay: Canvas;
+    --bh-color-text-primary: CanvasText;
+    --bh-color-text-secondary: CanvasText;
+    --bh-color-border-default: CanvasText;
+    --bh-color-accent-solid: Highlight;
+    --bh-color-accent-text: LinkText;
+    --bh-color-focus-ring: Highlight;
+  }
+}

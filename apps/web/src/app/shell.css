@@ -1,0 +1,220 @@
+/*
+ * Application shell layout.
+ *
+ * UX-SPECIFICATION §2.0:
+ *   Three zones on one persistent spine (the App Rail), with the Reader
+ *   as a full-canvas takeover.
+ *
+ * Sprint 1 implements: App Rail (left), Topbar, Workspace (main).
+ * Mobile (≤640) collapses the rail into a bottom navigation bar.
+ *
+ * Rail widths from DSS §2.14 (--bh-shell-rail-{collapsed,expanded}).
+ * Topbar height from DSS §2.14 (--bh-shell-topbar).
+ */
+
+/* The shell grid: rail | (topbar / workspace). */
+.bh-shell {
+  display: grid;
+  grid-template-columns: var(--bh-shell-rail-collapsed) 1fr;
+  grid-template-rows: var(--bh-shell-topbar) 1fr;
+  grid-template-areas:
+    "rail topbar"
+    "rail main";
+  min-height: 100dvh;
+}
+
+/* App Rail ─────────────────────────────────────────────────────────── */
+.bh-rail {
+  grid-area: rail;
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--bh-space-3) 0;
+  gap: var(--bh-space-2);
+  background: var(--bh-color-surface-subtle);
+  border-right: var(--bh-border-hairline) solid var(--bh-color-border-subtle);
+  z-index: var(--bh-z-rail);
+}
+
+.bh-rail__brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--bh-radius-md);
+  background: var(--bh-ai-gradient);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: var(--bh-space-2);
+  text-decoration: none;
+}
+
+.bh-rail__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bh-space-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  align-items: center;
+}
+
+.bh-rail__divider {
+  width: 32px;
+  height: 1px;
+  background: var(--bh-color-border-subtle);
+  margin: var(--bh-space-2) 0;
+}
+
+.bh-rail__spacer {
+  flex: 1 1 auto;
+}
+
+.bh-rail-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--bh-radius-md);
+  color: var(--bh-color-text-secondary);
+  text-decoration: none;
+  transition:
+    background-color var(--bh-duration-fast) var(--bh-ease-standard),
+    color var(--bh-duration-fast) var(--bh-ease-standard);
+  position: relative;
+}
+.bh-rail-item:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--bh-color-text-primary) calc(var(--bh-opacity-subtle) * 100%),
+    transparent
+  );
+  color: var(--bh-color-text-primary);
+}
+.bh-rail-item[aria-current="page"] {
+  background-color: var(--bh-color-accent-tint);
+  color: var(--bh-color-accent-text);
+}
+.bh-rail-item[aria-current="page"]::before {
+  /* Active indicator — never color-only; a left bar marks the item. */
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 var(--bh-radius-xs) var(--bh-radius-xs) 0;
+  background: var(--bh-color-accent-solid);
+}
+
+.bh-rail-item__icon {
+  width: var(--bh-icon-md);
+  height: var(--bh-icon-md);
+}
+
+/* Topbar ───────────────────────────────────────────────────────────── */
+.bh-topbar {
+  grid-area: topbar;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--bh-space-4);
+  background: var(--bh-color-bg);
+  border-bottom: var(--bh-border-hairline) solid var(--bh-color-border-subtle);
+  gap: var(--bh-space-4);
+  position: sticky;
+  top: 0;
+  z-index: var(--bh-z-sticky);
+}
+
+.bh-topbar__title {
+  font-family: var(--bh-font-ui);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--bh-color-text-primary);
+  margin: 0;
+}
+
+.bh-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--bh-space-2);
+}
+
+/* Workspace ────────────────────────────────────────────────────────── */
+.bh-workspace {
+  grid-area: main;
+  padding: var(--bh-space-6);
+  min-width: 0;
+}
+
+/* Bottom nav (mobile) ──────────────────────────────────────────────── */
+.bh-bottom-nav {
+  display: none;
+}
+
+/* ── Responsive (DSS §2.13 / UX §11) ────────────────────────────────── */
+
+/* Tablet and below: hide the rail; show a bottom nav instead. */
+@media (max-width: 640px) {
+  .bh-shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: var(--bh-shell-topbar) 1fr auto;
+    grid-template-areas:
+      "topbar"
+      "main"
+      "bottomnav";
+  }
+  .bh-rail {
+    display: none;
+  }
+  .bh-workspace {
+    padding: var(--bh-space-4);
+  }
+  .bh-bottom-nav {
+    grid-area: bottomnav;
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    padding: var(--bh-space-1) var(--bh-space-2);
+    background: var(--bh-color-surface-subtle);
+    border-top: var(--bh-border-hairline) solid var(--bh-color-border-subtle);
+    position: sticky;
+    bottom: 0;
+    z-index: var(--bh-z-rail);
+    /* Leave room for iOS home indicator. */
+    padding-bottom: calc(var(--bh-space-1) + env(safe-area-inset-bottom));
+  }
+  .bh-bottom-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-width: var(--bh-touch-min);
+    min-height: var(--bh-touch-min);
+    padding: var(--bh-space-1) var(--bh-space-2);
+    color: var(--bh-color-text-secondary);
+    text-decoration: none;
+    font-size: 11px;
+    line-height: 14px;
+    border-radius: var(--bh-radius-sm);
+  }
+  .bh-bottom-nav__item[aria-current="page"] {
+    color: var(--bh-color-accent-text);
+  }
+  .bh-bottom-nav__icon {
+    width: var(--bh-icon-md);
+    height: var(--bh-icon-md);
+  }
+}

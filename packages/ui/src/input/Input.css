@@ -1,0 +1,52 @@
+/* Input — DSS §6 text-input. Plain CSS, low-specificity, token-driven. */
+
+.bh-input {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bh-space-2);
+  height: var(--bh-size-lg);
+  padding: 0 var(--bh-space-3);
+  background: var(--bh-color-surface-raised);
+  color: var(--bh-color-text-primary);
+  border: var(--bh-border-hairline) solid var(--bh-color-border-default);
+  border-radius: var(--bh-radius-md);
+  font: inherit;
+  transition:
+    border-color var(--bh-duration-fast) var(--bh-ease-standard),
+    box-shadow var(--bh-duration-fast) var(--bh-ease-standard);
+}
+
+.bh-input:focus-within {
+  outline: none;
+  border-color: var(--bh-color-accent-solid);
+  box-shadow: var(--bh-shadow-focus);
+}
+
+.bh-input--invalid {
+  border-color: var(--bh-color-danger-solid);
+}
+
+.bh-input__leading {
+  display: inline-flex;
+  align-items: center;
+  color: var(--bh-color-text-tertiary);
+  width: var(--bh-icon-sm);
+  height: var(--bh-icon-sm);
+  flex: 0 0 auto;
+}
+
+.bh-input__control {
+  appearance: none;
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  min-width: 0;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+}
+
+.bh-input__control::placeholder {
+  color: var(--bh-color-text-tertiary);
+}

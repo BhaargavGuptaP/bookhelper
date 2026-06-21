@@ -1,0 +1,184 @@
+/*
+ * Button — visual implementation of DESIGN-SYSTEM-SPEC §6 "Buttons".
+ *
+ * All values resolved from CSS variables (Atlas tokens). The component never
+ * inlines raw colors/spacings — that's the entire point of the token layer.
+ *
+ * Apps that consume `@bookhelper/ui` must import `tokens.css` AND this file
+ * (or a styles bundle that includes it). The CSS is plain, low-specificity,
+ * and unscoped so apps can compose around it without specificity wars.
+ */
+
+.bh-button {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bh-space-2);
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+
+  /* Type */
+  font-family: var(--bh-font-ui);
+  font-weight: 500;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-decoration: none;
+
+  /* Shape */
+  border-radius: var(--bh-radius-md);
+  border: var(--bh-border-hairline) solid transparent;
+
+  /* Interactions */
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  /* Motion — fast/standard per §2.10 */
+  transition:
+    background-color var(--bh-duration-fast) var(--bh-ease-standard),
+    color var(--bh-duration-fast) var(--bh-ease-standard),
+    border-color var(--bh-duration-fast) var(--bh-ease-standard),
+    box-shadow var(--bh-duration-fast) var(--bh-ease-standard),
+    transform var(--bh-duration-fast) var(--bh-ease-standard);
+}
+
+/* Always-visible focus ring. Never `outline:none` without a replacement. */
+.bh-button:focus-visible {
+  outline: none;
+  box-shadow: var(--bh-shadow-focus);
+}
+
+/* Tactile press */
+.bh-button:not([aria-disabled="true"]):not([aria-busy="true"]):active {
+  transform: translateY(0.5px);
+}
+
+/* Pseudo-disabled state (we use aria-disabled, not `disabled`, to preserve focusability) */
+.bh-button[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: var(--bh-opacity-disabled);
+}
+
+.bh-button[aria-busy="true"] {
+  cursor: progress;
+}
+
+/* ── Sizes (§2.15) ────────────────────────────────────────────────── */
+/* Every size enforces a 44×44 minimum touch target via padding even when
+   the visible control is shorter — UX §12 / WCAG 2.2 2.5.8. */
+.bh-button--sm {
+  height: var(--bh-size-sm);
+  padding: 0 var(--bh-space-3);
+  font-size: 13px;
+  line-height: 18px;
+  min-width: var(--bh-touch-min);
+}
+.bh-button--md {
+  height: var(--bh-size-md);
+  padding: 0 var(--bh-space-4);
+  font-size: 14px;
+  line-height: 22px;
+  min-width: var(--bh-touch-min);
+}
+.bh-button--lg {
+  height: var(--bh-size-lg);
+  padding: 0 var(--bh-space-5);
+  font-size: 15px;
+  line-height: 20px;
+  min-width: var(--bh-touch-min);
+}
+
+/* ── Variants (§6 + §3 semantic) ───────────────────────────────────── */
+
+/* Primary — solid Iris (the brand) */
+.bh-button--primary {
+  background-color: var(--bh-color-accent-solid);
+  color: #ffffff;
+  border-color: var(--bh-color-accent-solid);
+}
+.bh-button--primary:hover:not([aria-disabled="true"]):not([aria-busy="true"]) {
+  background-color: var(--bh-color-accent-hover);
+  border-color: var(--bh-color-accent-hover);
+}
+
+/* Secondary — neutral, surface-raised */
+.bh-button--secondary {
+  background-color: var(--bh-color-surface-raised);
+  color: var(--bh-color-text-primary);
+  border-color: var(--bh-color-border-default);
+}
+.bh-button--secondary:hover:not([aria-disabled="true"]):not([aria-busy="true"]) {
+  background-color: var(--bh-color-surface-subtle);
+  border-color: var(--bh-color-border-strong);
+}
+
+/* Ghost — transparent until hover */
+.bh-button--ghost {
+  background-color: transparent;
+  color: var(--bh-color-text-primary);
+  border-color: transparent;
+}
+.bh-button--ghost:hover:not([aria-disabled="true"]):not([aria-busy="true"]) {
+  background-color: color-mix(
+    in srgb,
+    var(--bh-color-text-primary) calc(var(--bh-opacity-subtle) * 100%),
+    transparent
+  );
+}
+
+/* Danger — destructive intent */
+.bh-button--danger {
+  background-color: var(--bh-color-danger-solid);
+  color: #ffffff;
+  border-color: var(--bh-color-danger-solid);
+}
+.bh-button--danger:hover:not([aria-disabled="true"]):not([aria-busy="true"]) {
+  filter: brightness(0.95);
+}
+
+/* ── Slots ─────────────────────────────────────────────────────────── */
+
+.bh-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--bh-icon-sm);
+  height: var(--bh-icon-sm);
+  flex: 0 0 auto;
+}
+
+.bh-button__label {
+  display: inline-block;
+  min-width: 0;
+}
+
+/* Spinner — pure CSS so we don't ship an SVG just for this. */
+.bh-button__spinner {
+  width: var(--bh-icon-sm);
+  height: var(--bh-icon-sm);
+  border-radius: var(--bh-radius-full);
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: bh-button-spin var(--bh-duration-slower) linear infinite;
+  flex: 0 0 auto;
+}
+
+@keyframes bh-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Honor reduced motion — UX §12 / DSS §11. The spinner stays *visible* but
+   becomes a calm progress glyph (a half-arc, static). */
+@media (prefers-reduced-motion: reduce) {
+  .bh-button {
+    transition: none;
+  }
+  .bh-button__spinner {
+    animation: none;
+    border-top-color: var(--bh-color-text-secondary);
+  }
+}

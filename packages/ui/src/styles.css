@@ -1,0 +1,11 @@
+/*
+ * Aggregate stylesheet for @bookhelper/ui. Apps import this once:
+ *
+ *   import "@bookhelper/ui/styles.css";
+ *
+ * Tokens (design-tokens/styles/tokens.css) are imported separately by the
+ * consuming app — they belong to the app's global layer, not to UI.
+ */
+@import "./button/Button.css";
+@import "./input/Input.css";
+@import "./primitives/primitives.css";

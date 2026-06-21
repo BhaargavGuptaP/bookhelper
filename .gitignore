@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+
+# Test / coverage
+coverage/
+.vitest/
+
+# Turbo
+.turbo/
+
+# Env (never commit real secrets; .env.example is committed)
+.env
+.env.*
+!.env.example
+
+# Local data / uploads (local storage adapter dev target)
+.data/
+.storage/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log

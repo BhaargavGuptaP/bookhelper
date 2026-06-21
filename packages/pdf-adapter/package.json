@@ -1,0 +1,40 @@
+{
+  "name": "@bookhelper/pdf-adapter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PDF DocumentAdapter for the BookHelper Reader Platform. Implements opening, metadata, capabilities, TOC, navigation, locator resolution, text extraction, image enumeration, and lifecycle on top of pdfjs-dist. No rendering, no UI, no search engine — those belong to later sprints.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "clean": "rm -rf dist .turbo coverage"
+  },
+  "dependencies": {
+    "@bookhelper/reader-core": "workspace:*",
+    "pdfjs-dist": "4.10.38"
+  },
+  "devDependencies": {
+    "@bookhelper/config": "workspace:*",
+    "@types/node": "^22.10.2",
+    "pdf-lib": "^1.17.1",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
