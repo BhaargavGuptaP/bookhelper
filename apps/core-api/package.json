@@ -24,7 +24,7 @@
     "drizzle-orm": "^0.38.3",
     "express": "^4.21.2",
     "fflate": "^0.8.2",
-    "jose": "^5.9.6",
+    "jose": "^6.2.3",
     "nestjs-pino": "^4.2.0",
     "pdf-lib": "^1.17.1",
     "pino-http": "^10.3.0",
