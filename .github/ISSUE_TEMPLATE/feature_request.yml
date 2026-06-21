@@ -1,0 +1,109 @@
+name: ✨ Feature request
+description: Propose a new feature, enhancement, or behavior change.
+title: "feat: <concise summary>"
+labels: ["Feature", "Needs Discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing an idea!
+
+        Before opening this issue:
+        - Search [existing issues](https://github.com/BhaargavGuptaP/bookhelper/issues?q=is%3Aissue) and [Discussions](https://github.com/BhaargavGuptaP/bookhelper/discussions) to avoid duplicates.
+        - Skim [`PRD.md`](../../PRD.md), [`ROADMAP.md`](../../ROADMAP.md), and [`FEATURE-SPECIFICATION.md`](../../FEATURE-SPECIFICATION.md). Your proposal must fit the product vision or argue why it should expand it.
+
+  - type: input
+    id: summary
+    attributes:
+      label: One-line summary
+      placeholder: "Add 'jump to highlight' shortcut in the reader sidebar."
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user problem does this solve? Whose problem is it?
+      placeholder: "Power users lose their place when scanning a long highlight list."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the behavior you'd like. Mention UI, keyboard, accessibility implications.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What else could solve this? Why isn't it good enough?
+
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      description: Where in the product does this live?
+      multiple: true
+      options:
+        - Library
+        - Reader
+        - Knowledge
+        - AI / Tutor
+        - Learning / SR
+        - Search
+        - Personalization
+        - Platform / Infra
+        - Accessibility
+        - Performance
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Perceived priority
+      options:
+        - "Low — nice to have"
+        - "Medium — would meaningfully improve UX"
+        - "High — unblocks a core workflow"
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: When is this "done"? List observable, testable bullet points.
+      placeholder: |
+        - [ ] Pressing `g h` focuses the highlights sidebar tab.
+        - [ ] Arrow keys move between highlights with visible focus.
+        - [ ] `Enter` jumps the canvas to the highlight's locator.
+
+  - type: textarea
+    id: spec_alignment
+    attributes:
+      label: Spec alignment
+      description: Which specs would change if this lands? (`PRD.md`, `UX-SPECIFICATION.md`, `DESIGN-SYSTEM-SPEC.md`, `FEATURE-SPECIFICATION.md`, `ARCHITECTURE.md`, …)
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Screenshots, mockups, links, prior art.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I agree to follow this project's [Code of Conduct](../../CODE_OF_CONDUCT.md).
+          required: true
+        - label: I checked the PRD, Roadmap, and Feature Specification before proposing this.
+          required: true

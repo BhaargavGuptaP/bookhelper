@@ -1,0 +1,66 @@
+version: 2
+updates:
+  # GitHub Actions used in workflows.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "Dependencies"
+      - "ci"
+
+  # Root pnpm workspace.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 10
+    versioning-strategy: "increase-if-necessary"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    labels:
+      - "Dependencies"
+    groups:
+      eslint:
+        patterns: ["eslint", "eslint-*", "@typescript-eslint/*"]
+      prettier:
+        patterns: ["prettier", "prettier-*"]
+      vitest:
+        patterns: ["vitest", "@vitest/*"]
+      types:
+        patterns: ["@types/*"]
+      turbo:
+        patterns: ["turbo", "@turbo/*"]
+      next:
+        patterns: ["next", "eslint-config-next", "@next/*"]
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
+      nestjs:
+        patterns: ["@nestjs/*"]
+      drizzle:
+        patterns: ["drizzle-*"]
+      tanstack:
+        patterns: ["@tanstack/*"]
+    ignore:
+      # Major version bumps for these are intentional and reviewed manually.
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@nestjs/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]

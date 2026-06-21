@@ -1,0 +1,119 @@
+name: 🐛 Bug report
+description: Something is broken or behaves unexpectedly.
+title: "bug: <concise summary>"
+labels: ["Bug", "Needs Discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report!
+
+        Before opening this issue, please:
+        - Search [existing issues](https://github.com/BhaargavGuptaP/bookhelper/issues?q=is%3Aissue) to avoid duplicates.
+        - Make sure you can reproduce the bug on the **latest `main`**.
+        - **Do not** report security vulnerabilities here — see [SECURITY.md](../../SECURITY.md).
+
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: One sentence describing the bug.
+      placeholder: "Reader crashes when opening a PDF with an empty TOC."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      description: Where does the bug live?
+      multiple: true
+      options:
+        - apps/web (Library / Shell)
+        - apps/web (Reader)
+        - apps/core-api
+        - packages/reader-core
+        - packages/render-engine
+        - packages/pdf-adapter
+        - packages/reader-ui
+        - packages/design-tokens
+        - packages/ui
+        - packages/api-contracts
+        - packages/telemetry
+        - packages/config
+        - Tooling / CI / build
+        - Documentation
+        - Other / not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Minimal, deterministic steps.
+      placeholder: |
+        1. `pnpm install`
+        2. `pnpm dev`
+        3. Upload `example.pdf` in the Library
+        4. Open `/read/<docId>`
+        5. Observe the crash
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include error messages, stack traces, screenshots.
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: BookHelper version / commit
+      placeholder: "v0.1.0 or commit SHA"
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Node, pnpm, browser.
+      placeholder: "macOS 14.5 · Node 22.5.1 · pnpm 9.15.0 · Chrome 128"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / screenshots
+      description: Paste relevant logs in a code block. Redact secrets.
+      render: shell
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Anything else that might help — related issues, hypotheses, etc.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I agree to follow this project's [Code of Conduct](../../CODE_OF_CONDUCT.md).
+          required: true
+        - label: I searched existing issues before opening this one.
+          required: true
+        - label: This is **not** a security vulnerability (those go through [SECURITY.md](../../SECURITY.md)).
+          required: true

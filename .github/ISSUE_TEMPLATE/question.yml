@@ -1,0 +1,44 @@
+name: ❓ Question
+description: Ask a question about how BookHelper works or how to use it.
+title: "question: <concise summary>"
+labels: ["Question", "Needs Discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question? Great — but first:
+
+        - For **open-ended** discussions ("would X be a good idea?", "how do you all approach Y?"), use [Discussions](https://github.com/BhaargavGuptaP/bookhelper/discussions) instead.
+        - For **specific, answerable** questions about behavior or usage, this template is the right place.
+        - For bugs, use the Bug template. For features, use the Feature template.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: Be specific. What are you trying to do? What did you try?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Version, environment, what you've already read in the docs.
+      placeholder: "v0.1.0 · Node 22 · I've read README.md and ARCHITECTURE.md §4."
+
+  - type: textarea
+    id: docs_gap
+    attributes:
+      label: Is this a docs gap?
+      description: If a doc *should* have answered this, where would you have looked?
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I agree to follow this project's [Code of Conduct](../../CODE_OF_CONDUCT.md).
+          required: true
+        - label: I checked the README, CONTRIBUTING, and Discussions before asking.
+          required: true

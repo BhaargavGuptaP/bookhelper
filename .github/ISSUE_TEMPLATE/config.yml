@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/BhaargavGuptaP/bookhelper/discussions
+    about: Open-ended ideas, design conversations, "would X be a good fit?"
+  - name: 🔒 Report a security vulnerability
+    url: https://github.com/BhaargavGuptaP/bookhelper/security/advisories/new
+    about: Do NOT open a public issue. Use the private advisory flow — see SECURITY.md.
+  - name: 📚 Documentation (specs)
+    url: https://github.com/BhaargavGuptaP/bookhelper#table-of-contents
+    about: Architecture, PRD, UX, Design System, Feature & Reader specs.
