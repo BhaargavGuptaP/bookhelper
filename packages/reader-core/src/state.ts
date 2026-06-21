@@ -35,6 +35,26 @@ import type { LifecycleState } from "./lifecycle.js";
  * subscribers can diff with `===` and never accidentally mutate
  * shared state.
  */
+/**
+ * Declaration-merge point for typed plugin state slices.
+ *
+ * Each plugin package augments this interface to declare its own state key
+ * and type. The pattern mirrors `ReaderCommandMap` and `ReaderEventMap`:
+ *
+ * ```ts
+ * // In packages/highlight-plugin/src/index.ts:
+ * declare module "@bookhelper/reader-core" {
+ *   interface ReaderPluginStateMap {
+ *     "bookhelper.highlights": HighlightSlice;
+ *   }
+ * }
+ * ```
+ *
+ * Plugins that have not declared a slice access their state as `unknown`.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ReaderPluginStateMap {}
+
 export interface ReaderState {
   readonly lifecycle: LifecycleState;
   /** The document this session is bound to (null until `opened`). */
@@ -67,8 +87,22 @@ export interface ReaderState {
   readonly searchQuery: string | null;
   readonly searchMatches: readonly Locator[];
 
-  /** Per-session bag for plugins that need ephemeral, opaque state. */
-  readonly pluginState: Readonly<Record<string, unknown>>;
+  /**
+   * Per-session state bag for plugins.
+   *
+   * Plugins declare their slice via TypeScript declaration merging:
+   * ```ts
+   * declare module "@bookhelper/reader-core" {
+   *   interface ReaderPluginStateMap {
+   *     "bookhelper.highlights": { highlights: readonly StoredHighlight[] };
+   *   }
+   * }
+   * ```
+   * This gives the same type-safety and discoverability as
+   * ReaderCommandMap and ReaderEventMap. Unknown keys remain accessible
+   * as `unknown` for forward-compatibility with untyped plugins.
+   */
+  readonly pluginState: Readonly<Partial<ReaderPluginStateMap>>;
 }
 
 /** The conservative default for a session that has not yet opened. */
@@ -88,7 +122,7 @@ export const initialState: ReaderState = Object.freeze({
   history: Object.freeze([]) as readonly PointLocator[],
   searchQuery: null,
   searchMatches: Object.freeze([]) as readonly Locator[],
-  pluginState: Object.freeze({}),
+  pluginState: Object.freeze({}) as Readonly<Partial<ReaderPluginStateMap>>,
 });
 
 /** Subscriber to state changes. Receives the new (and previous) state. */

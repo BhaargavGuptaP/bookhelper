@@ -97,7 +97,7 @@ export {
 } from "./errors.js";
 
 // ─── State ────────────────────────────────────────────────────────────
-export type { ReaderState, ReaderStore, StateSelector, StateSubscriber } from "./state.js";
+export type { ReaderPluginStateMap, ReaderState, ReaderStore, StateSelector, StateSubscriber } from "./state.js";
 export { createStore, initialState, select } from "./state.js";
 
 // ─── Events ───────────────────────────────────────────────────────────
