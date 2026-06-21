@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@bookhelper/config": "workspace:*",
-    "@types/node": "^22.10.2",
+    "@types/node": "^26.0.0",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
