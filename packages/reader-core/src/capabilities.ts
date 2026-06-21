@@ -56,6 +56,8 @@ export interface ReaderCapabilities {
   readonly code: boolean;
   readonly math: boolean;
   readonly media: boolean;
+  /** True if text content is available via OCR (scanned pages, image-only EPUB). */
+  readonly ocr: boolean;
 
   // ── View controls ────────────────────────────────────────────────────
   readonly zoom: boolean;
@@ -112,6 +114,7 @@ export const emptyCapabilities: ReaderCapabilities = Object.freeze({
   code: false,
   math: false,
   media: false,
+  ocr: false,
   zoom: false,
   reflow: false,
   dualView: false,
