@@ -199,9 +199,12 @@ export class DocumentsService {
    *
    * Returns the bytes + the source content-type. We *recompute* the
    * content-type from the document's `sourceType` rather than trusting
-   * the storage metadata — `local.driver` may not have persisted the
-   * `*.ct` sidecar for older uploads, and the source type → MIME map
-   * is canonical.
+   * the storage metadata: object metadata is not authoritative here —
+   * the local driver's `*.ct` sidecar may be absent or stale, and an
+   * S3/R2 backend can return a generic or wrong content-type (e.g. a
+   * `text/html` default) for bytes it didn't ingest with explicit
+   * metadata. The `sourceType → MIME` map is the canonical source of
+   * truth, derived from the validated upload MIME at registration.
    */
   async getContent(
     ctx: LibraryContext,
@@ -215,7 +218,7 @@ export class DocumentsService {
     const doc = await this.repo.findById(ctx, id);
     if (!doc) throw new NotFoundError("Document not found.");
     const obj = await this.storage.get(doc.storageKey);
-    const contentType = obj.contentType ?? mimeForSourceType(doc.sourceType);
+    const contentType = mimeForSourceType(doc.sourceType);
     return {
       bytes: obj.body,
       contentType,
